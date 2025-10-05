@@ -5,10 +5,10 @@ import User from '../models/user.model.js'; // tu modelo de usuario (Mongo, SQL,
 // Registrar usuario (opcional si quieres crear con password)
 export const register = async (req, res) => {
   try {
-    const { email, password, name, surname, phone, shippingAddress } = req.body;
+    const { name, email, password } = req.body;
 
     // Validar campos obligatorios antes de crear
-    if (!email || !password || !name || !surname || !phone || !shippingAddress) {
+    if (!email || !password || !name ) {
       return res.status(400).json({ message: "Faltan campos obligatorios" });
     }
 
@@ -18,12 +18,10 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
+      name,
       email,
       password: hashedPassword,
-      name,
-      surname,
-      phone,
-      shippingAddress,
+      age
     });
 
     res.status(201).json({ message: "Usuario registrado", user: newUser });
