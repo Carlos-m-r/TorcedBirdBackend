@@ -24,16 +24,13 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             required:
- *               - nombre
+ *               - name
  *               - mail
- *               - age
  *             properties:
- *               nombre:
+ *               name:
  *                 type: string
  *               mail:
  *                 type: string
- *               age:
- *                 type: integer
  *     responses:
  *       201:
  *         description: Usuario creado
@@ -48,11 +45,11 @@ router.post('/', createUser);
  * @swagger
  * /users:
  *   get:
- *     summary: Obtener un usuario por nombre y mail
+ *     summary: Obtener un usuario por name y mail
  *     tags: [Users]
  *     parameters:
  *       - in: query
- *         name: nombre
+ *         name: name
  *         schema:
  *           type: string
  *         required: true
@@ -84,11 +81,11 @@ router.get('/', authMiddleware, getUser);
  *           schema:
  *             type: object
  *             required:
- *               - nombre
+ *               - name
  *               - mail
  *               - modifiedData
  *             properties:
- *               nombre:
+ *               name:
  *                 type: string
  *               mail:
  *                 type: string
@@ -119,10 +116,10 @@ router.patch('/', authMiddleware, updateUser);
  *           schema:
  *             type: object
  *             required:
- *               - nombre
+ *               - name
  *               - mail
  *             properties:
- *               nombre:
+ *               name:
  *                 type: string
  *               mail:
  *                 type: string
