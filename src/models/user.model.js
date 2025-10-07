@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // crea createdAt y updatedAt
+    timestamps: true,
     versionKey: false,
   }
 );
