@@ -25,11 +25,11 @@ const router = express.Router();
  *             type: object
  *             required:
  *               - name
- *               - mail
+ *               - email
  *             properties:
  *               name:
  *                 type: string
- *               mail:
+ *               email:
  *                 type: string
  *     responses:
  *       201:
@@ -81,12 +81,12 @@ router.get('/', authMiddleware, getUser);
  *             type: object
  *             required:
  *               - name
- *               - mail
+ *               - email
  *               - modifiedData
  *             properties:
  *               name:
  *                 type: string
- *               mail:
+ *               email:
  *                 type: string
  *               modifiedData:
  *                 type: object
@@ -116,11 +116,11 @@ router.patch('/', authMiddleware, updateUser);
  *             type: object
  *             required:
  *               - name
- *               - mail
+ *               - email
  *             properties:
  *               name:
  *                 type: string
- *               mail:
+ *               email:
  *                 type: string
  *     responses:
  *       200:
