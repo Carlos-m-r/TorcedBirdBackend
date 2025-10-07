@@ -1,6 +1,3 @@
-import swaggerUi from 'swagger-ui-express';
-import swaggerJsdoc from 'swagger-jsdoc';
-
 export function setupSwagger(app) {
   const options = {
     definition: {
@@ -9,18 +6,29 @@ export function setupSwagger(app) {
         title: 'TorcedBird API',
         version: '1.0.0',
       },
+      components: {
+        schemas: {
+          User: {
+            type: 'object',
+            properties: {
+              id: { type: 'integer', example: 1 },
+              name: { type: 'string', example: 'Juan' },
+              email: { type: 'string', example: 'juan@example.com' }
+            },
+            required: ['id', 'name', 'email']
+          }
+        }
+      }
     },
     apis: ['./src/routes/*.js', './src/controllers/*.js'], 
   };
 
   const swaggerSpec = swaggerJsdoc(options);
 
-  // Ruta para JSON
   app.get('/api-docs/json', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(swaggerSpec);
   });
 
-  // Ruta para UI
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
