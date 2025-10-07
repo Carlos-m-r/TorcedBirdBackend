@@ -10,9 +10,9 @@ export async function insertUser(user) {
   return newUser.save();
 }
 
-// Obtener usuario por nombre y mail
-export async function getUser(user) {
-  return User.findOne({ nombre: user.nombre, mail: user.mail });
+// Obtener usuario por id
+export async function getUser({ id }) {
+  return User.findById(id).select('-password');
 }
 
 // Actualizar usuario

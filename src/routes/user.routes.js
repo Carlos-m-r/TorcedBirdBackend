@@ -45,26 +45,46 @@ router.post('/', createUser);
  * @swagger
  * /users:
  *   get:
- *     summary: Obtener un usuario por name y mail
+ *     summary: Obtener el usuario autenticado
+ *     description: Retorna la información del usuario actual a partir del token JWT.
  *     tags: [Users]
- *     parameters:
- *       - in: query
- *         name: name
- *         schema:
- *           type: string
- *         required: true
- *       - in: query
- *         name: mail
- *         schema:
- *           type: string
- *         required: true
+ *     security:
+ *       - bearerAuth: []        # indica que este endpoint requiere autenticación
  *     responses:
  *       200:
- *         description: Usuario encontrado
+ *         description: Usuario encontrado correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: 6512f72b45a8c34d29a4e2b7
+ *                 email:
+ *                   type: string
+ *                   example: juan@example.com
+ *                 name:
+ *                   type: string
+ *                   example: Juan
+ *                 surname:
+ *                   type: string
+ *                   example: Pérez
+ *                 phone:
+ *                   type: string
+ *                   example: "+541112345678"
+ *                 shippingAddress:
+ *                   type: string
+ *                   example: "Calle Falsa 123, Ciudad"
+ *                 admin:
+ *                   type: boolean
+ *                   example: true
+ *       401:
+ *         description: No autorizado o token inválido
  *       404:
  *         description: Usuario no encontrado
  *       500:
- *         description: Error interno
+ *         description: Error interno del servidor
  */
 router.get('/', authMiddleware, getUser);
 

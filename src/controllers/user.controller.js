@@ -15,16 +15,24 @@ export async function createUser(req, res) {
   }
 }
 
-// Obtener usuario
 export async function getUser(req, res) {
   try {
-    // Para GET, los datos suelen enviarse como query params
-    const { nombre, mail } = req.query;
-    const user = await userService.getUser({ nombre, mail });
-    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
-    res.json(user);
+    // El middleware de autenticación coloca el usuario en req.user
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'No autorizado: falta ID de usuario en el token' });
+    }
+
+    const user = await userService.getUser({ id: userId });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.status(200).json(user);
   } catch (error) {
-    console.error(error);
+    console.error('Error obteniendo usuario:', error);
     res.status(500).json({ error: 'Error obteniendo usuario' });
   }
 }
