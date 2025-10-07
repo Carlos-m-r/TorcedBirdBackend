@@ -49,36 +49,14 @@ router.post('/', createUser);
  *     description: Retorna la información del usuario actual a partir del token JWT.
  *     tags: [Users]
  *     security:
- *       - bearerAuth: []        # indica que este endpoint requiere autenticación
+ *       - bearerAuth: []        # Requiere autenticación por JWT
  *     responses:
  *       200:
  *         description: Usuario encontrado correctamente
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 _id:
- *                   type: string
- *                   example: 6512f72b45a8c34d29a4e2b7
- *                 email:
- *                   type: string
- *                   example: juan@example.com
- *                 name:
- *                   type: string
- *                   example: Juan
- *                 surname:
- *                   type: string
- *                   example: Pérez
- *                 phone:
- *                   type: string
- *                   example: "+541112345678"
- *                 shippingAddress:
- *                   type: string
- *                   example: "Calle Falsa 123, Ciudad"
- *                 admin:
- *                   type: boolean
- *                   example: true
+ *               $ref: '#/components/schemas/User'
  *       401:
  *         description: No autorizado o token inválido
  *       404:
@@ -87,6 +65,7 @@ router.post('/', createUser);
  *         description: Error interno del servidor
  */
 router.get('/', authMiddleware, getUser);
+
 
 /**
  * @swagger
