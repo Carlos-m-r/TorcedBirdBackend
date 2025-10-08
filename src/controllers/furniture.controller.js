@@ -35,15 +35,16 @@ export async function deleteFurniture(req, res) {
 // Actualizar un mueble
 export async function updateFurniture(req, res) {
   try {
-    const { reference, name } = req.body;
-    const modifiedData = req.body;
+    const { id, modifiedData } = req.body;
 
-    const result = await furnitureService.updateFurniture({ reference, name }, modifiedData);
+    if (!id) {
+      return res.status(400).json({ message: "El id es obligatorio para actualizar" });
+    }
+
+    const result = await furnitureService.updateFurniture({ _id: id }, modifiedData);
 
     if (!result) {
-      return res
-        .status(404)
-        .json({ message: "No se encontró el mueble para actualizar" });
+      return res.status(404).json({ message: "No se encontró el mueble para actualizar" });
     }
 
     res.status(200).json({

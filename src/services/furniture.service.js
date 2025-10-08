@@ -19,14 +19,15 @@ export async function getFurniture(furniture) {
   });
 }
 
-// Actualizar mueble
-export async function updateFurniture(furniture, modifiedData) {
+// Actualizar mueble usando _id
+export async function updateFurniture(filter, modifiedData) {
   return Furniture.findOneAndUpdate(
-    { reference: furniture.reference, name: furniture.name },
+    filter,           // filter = { _id: id }
     { $set: modifiedData },
-    { new: true }
+    { new: true }     // devuelve el documento actualizado
   );
 }
+
 
 // Eliminar mueble
 export async function deleteFurniture(furniture) {
