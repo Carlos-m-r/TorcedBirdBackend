@@ -55,14 +55,21 @@ export async function updateFurniture(req, res) {
   }
 }
 
-// Obtener un mueble
+// Obtener muebles
 export async function getFurniture(req, res) {
   try {
     const { reference, name } = req.query;
-    const result = await furnitureService.getFurniture({ reference, name });
 
-    if (!result) {
-      return res.status(404).json({ message: "Mueble no encontrado" });
+    let result;
+    if (reference || name) {
+      // Si vienen filtros, busca uno solo
+      result = await furnitureService.getFurniture({ reference, name });
+      if (!result) {
+        return res.status(404).json({ message: "Mueble no encontrado" });
+      }
+    } else {
+      // Si no hay filtros, devuelve todos los muebles
+      result = await furnitureService.getAllFurniture();
     }
 
     res.status(200).json(result);

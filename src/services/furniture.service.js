@@ -9,6 +9,10 @@ export async function insertFurniture(furniture) {
   return newFurniture.save();
 }
 
+export async function getAllFurniture() {
+  return await Furniture.find(); // Devuelve todos los documentos
+}
+
 // Obtener mueble por referencia y nombre
 export async function getFurniture(furniture) {
   return Furniture.findOne({reference: furniture.reference, name: furniture.name,
