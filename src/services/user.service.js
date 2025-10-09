@@ -28,7 +28,7 @@ export async function updateUser({ email }, modifiedData) {
   );
 }
 
-// 🔹 Actualizar contraseña
+// 🔹 Actualizar contraseña sin validar otros campos
 export async function updatePassword({ email, passwordActual, passwordNueva }) {
   const user = await User.findOne({ email });
   if (!user) return { success: false, message: 'Usuario no encontrado' };
@@ -41,10 +41,9 @@ export async function updatePassword({ email, passwordActual, passwordNueva }) {
   const isSame = await bcrypt.compare(passwordNueva, user.password);
   if (isSame) return { success: false, message: 'La nueva contraseña no puede ser igual a la anterior' };
 
-  // Guardar nueva contraseña
+  // Guardar nueva contraseña directamente con updateOne
   const hashedPassword = await bcrypt.hash(passwordNueva, 10);
-  user.password = hashedPassword;
-  await user.save();
+  await User.updateOne({ email }, { $set: { password: hashedPassword } });
 
   return { success: true, message: 'Contraseña actualizada correctamente' };
 }
