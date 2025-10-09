@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import UserModel from '../models/user.model.js';
 
 export const User = UserModel;
