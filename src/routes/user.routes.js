@@ -13,6 +13,73 @@ const router = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: "652a2c98f7e01f001e6b2d11"
+ *         email:
+ *           type: string
+ *           example: "usuario@correo.com"
+ *         name:
+ *           type: string
+ *           example: "Juan"
+ *         surname:
+ *           type: string
+ *           example: "Pérez"
+ *         phone:
+ *           type: string
+ *           example: "+34123456789"
+ *         shippingAddress:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               street:
+ *                 type: string
+ *                 example: "Calle Mayor 10"
+ *               postalCode:
+ *                 type: string
+ *                 example: "28013"
+ *               city:
+ *                 type: string
+ *                 example: "Madrid"
+ *         paymentMethod:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 example: "Visa"
+ *               number:
+ *                 type: string
+ *                 example: "**** **** **** 4242"
+ *               expiration:
+ *                 type: string
+ *                 example: "12/26"
+ *         additionalData:
+ *           type: string
+ *           example: "Cliente VIP con descuento permanente"
+ *         admin:
+ *           type: boolean
+ *           example: false
+ *         active:
+ *           type: boolean
+ *           example: true
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ */
+
+/**
+ * @swagger
  * /users:
  *   post:
  *     summary: Crear un nuevo usuario
@@ -24,16 +91,51 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             required:
- *               - name
  *               - email
+ *               - password
+ *               - name
  *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
  *               name:
  *                 type: string
- *               email:
+ *               surname:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               shippingAddress:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     street:
+ *                       type: string
+ *                     postalCode:
+ *                       type: string
+ *                     city:
+ *                       type: string
+ *               paymentMethod:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     type:
+ *                       type: string
+ *                     number:
+ *                       type: string
+ *                     expiration:
+ *                       type: string
+ *               additionalData:
  *                 type: string
  *     responses:
  *       201:
- *         description: Usuario creado
+ *         description: Usuario creado con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       409:
  *         description: Usuario ya existe
  *       500:
@@ -49,7 +151,7 @@ router.post('/', createUser);
  *     description: Retorna la información del usuario actual a partir del token JWT.
  *     tags: [Users]
  *     security:
- *       - bearerAuth: []        # Requiere autenticación por JWT
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Usuario encontrado correctamente
@@ -66,13 +168,14 @@ router.post('/', createUser);
  */
 router.get('/', authMiddleware, getUser);
 
-
 /**
  * @swagger
  * /users:
  *   patch:
  *     summary: Actualizar parcialmente un usuario
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -80,19 +183,20 @@ router.get('/', authMiddleware, getUser);
  *           schema:
  *             type: object
  *             required:
- *               - name
  *               - email
  *               - modifiedData
  *             properties:
- *               name:
- *                 type: string
  *               email:
  *                 type: string
  *               modifiedData:
  *                 type: object
  *     responses:
  *       200:
- *         description: Usuario actualizado
+ *         description: Usuario actualizado correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       404:
  *         description: Usuario no encontrado
  *       409:
@@ -106,8 +210,11 @@ router.patch('/', authMiddleware, updateUser);
  * @swagger
  * /users:
  *   delete:
- *     summary: Eliminar un usuario
+ *     summary: Desactivar un usuario (borrado lógico)
+ *     description: Cambia el estado del usuario a inactivo (active = false) en lugar de eliminarlo.
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -115,20 +222,21 @@ router.patch('/', authMiddleware, updateUser);
  *           schema:
  *             type: object
  *             required:
- *               - name
  *               - email
  *             properties:
- *               name:
- *                 type: string
  *               email:
  *                 type: string
  *     responses:
  *       200:
- *         description: Usuario eliminado
+ *         description: Usuario desactivado con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       404:
  *         description: Usuario no encontrado
  *       500:
- *         description: Error interno
+ *         description: Error desactivando usuario
  */
 router.delete('/', authMiddleware, deleteUser);
 

@@ -1,7 +1,5 @@
-// src/services/user.service.js
 import UserModel from '../models/user.model.js';
 
-// Exportamos modelo por si quieres instanciarlo directamente
 export const User = UserModel;
 
 // Crear usuario
@@ -16,15 +14,19 @@ export async function getUser({ id }) {
 }
 
 // Actualizar usuario
-export async function updateUser(user, modifiedData) {
+export async function updateUser({ email }, modifiedData) {
   return User.findOneAndUpdate(
-    { nombre: user.nombre, mail: user.mail },
+    { email },
     { $set: modifiedData },
     { new: true }
   );
 }
 
-// Eliminar usuario
-export async function deleteUser(user) {
-  return User.findOneAndDelete({ nombre: user.nombre, mail: user.mail });
+// Desactivar usuario (borrado lógico)
+export async function deactivateUser({ email }) {
+  return User.findOneAndUpdate(
+    { email },
+    { $set: { active: false } },
+    { new: true }
+  );
 }

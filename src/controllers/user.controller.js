@@ -3,8 +3,17 @@ import * as userService from '../services/user.service.js';
 // Crear usuario
 export async function createUser(req, res) {
   try {
-    const { nombre, mail, age } = req.body;
-    const newUser = await userService.insertUser({ nombre, mail, age });
+    const { email, password, name, surname, phone, shippingAddress, paymentMethod, additionalData } = req.body;
+    const newUser = await userService.insertUser({
+      email,
+      password,
+      name,
+      surname,
+      phone,
+      shippingAddress,
+      paymentMethod,
+      additionalData,
+    });
     res.status(201).json({ message: 'Usuario creado con éxito', user: newUser });
   } catch (error) {
     console.error(error);
@@ -15,17 +24,15 @@ export async function createUser(req, res) {
   }
 }
 
+// Obtener usuario autenticado
 export async function getUser(req, res) {
   try {
-    // El middleware de autenticación coloca el usuario en req.user
     const userId = req.user?.id;
-
     if (!userId) {
       return res.status(401).json({ error: 'No autorizado: falta ID de usuario en el token' });
     }
 
     const user = await userService.getUser({ id: userId });
-
     if (!user) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
@@ -40,8 +47,8 @@ export async function getUser(req, res) {
 // Actualizar usuario
 export async function updateUser(req, res) {
   try {
-    const { nombre, mail, modifiedData } = req.body;
-    const updatedUser = await userService.updateUser({ nombre, mail }, modifiedData);
+    const { email, modifiedData } = req.body;
+    const updatedUser = await userService.updateUser({ email }, modifiedData);
     if (!updatedUser) return res.status(404).json({ error: 'Usuario no encontrado' });
     res.json({ message: 'Usuario actualizado', user: updatedUser });
   } catch (error) {
@@ -53,15 +60,19 @@ export async function updateUser(req, res) {
   }
 }
 
-// Eliminar usuario
+// "Eliminar" usuario (borrado lógico → active: false)
 export async function deleteUser(req, res) {
   try {
-    const { nombre, mail } = req.body;
-    const deletedUser = await userService.User.findOneAndDelete({ nombre, mail });
-    if (!deletedUser) return res.status(404).json({ error: 'Usuario no encontrado' });
-    res.json({ message: 'Usuario eliminado con éxito', user: deletedUser });
+    const { email } = req.body;
+    const deactivatedUser = await userService.deactivateUser({ email });
+
+    if (!deactivatedUser) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json({ message: 'Usuario desactivado con éxito', user: deactivatedUser });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error eliminando usuario' });
+    res.status(500).json({ error: 'Error desactivando usuario' });
   }
 }
