@@ -1,5 +1,11 @@
 import express from 'express';
-import { createUser, getUser, updateUser, deleteUser, updatePasswordController } from '../controllers/user.controller.js';
+import {
+  createUser,
+  getUser,
+  updateUser,
+  deleteUser,
+  updatePasswordController
+} from '../controllers/user.controller.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
@@ -30,6 +36,9 @@ const router = express.Router();
  *         surname:
  *           type: string
  *           example: "Pérez"
+ *         personal_id:
+ *           type: string
+ *           example: "12345678X"
  *         phone:
  *           type: string
  *           example: "+34123456789"
@@ -94,6 +103,7 @@ const router = express.Router();
  *               - email
  *               - password
  *               - name
+ *               - personal_id
  *             properties:
  *               email:
  *                 type: string
@@ -103,6 +113,9 @@ const router = express.Router();
  *                 type: string
  *               surname:
  *                 type: string
+ *               personal_id:
+ *                 type: string
+ *                 example: "12345678X"
  *               phone:
  *                 type: string
  *               shippingAddress:
@@ -190,6 +203,10 @@ router.get('/', authMiddleware, getUser);
  *                 type: string
  *               modifiedData:
  *                 type: object
+ *                 properties:
+ *                   personal_id:
+ *                     type: string
+ *                     example: "12345678X"
  *     responses:
  *       200:
  *         description: Usuario actualizado correctamente
@@ -239,7 +256,6 @@ router.patch('/', authMiddleware, updateUser);
  *         description: Error desactivando usuario
  */
 router.delete('/', authMiddleware, deleteUser);
-
 
 /**
  * @swagger

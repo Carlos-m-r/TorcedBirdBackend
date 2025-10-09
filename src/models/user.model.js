@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -24,12 +25,18 @@ const userSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
+
+    // 🔹 Nuevo campo
+    personal_id: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+
     phone: {
       type: String,
       required: false,
     },
-
-    // 🔹 Array de direcciones: cada una con calle, código postal y ciudad
     shippingAddress: [
       {
         street: { type: String, required: true, trim: true },
@@ -37,28 +44,21 @@ const userSchema = new mongoose.Schema(
         city: { type: String, required: true, trim: true }
       }
     ],
-
     admin: {
       type: Boolean,
       default: false,
     },
-
-    // 🔹 Estado activo/inactivo
     active: {
       type: Boolean,
       default: true,
     },
-
-    // 🔹 Array de métodos de pago: tipo, número, expiración
     paymentMethod: [
       {
-        type: { type: String, required: true, trim: true }, // Ej: "Visa", "PayPal"
+        type: { type: String, required: true, trim: true },
         number: { type: String, required: true, trim: true },
         expiration: { type: String, required: false, trim: true }
       }
     ],
-
-    // 🔹 Texto libre
     additionalData: {
       type: String,
       required: false,
@@ -70,6 +70,7 @@ const userSchema = new mongoose.Schema(
     versionKey: false,
   }
 );
+
 
 const User = mongoose.model("User", userSchema);
 

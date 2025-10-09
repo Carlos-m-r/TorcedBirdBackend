@@ -5,9 +5,15 @@ export const Furniture = FurnitureModel;
 
 // Crear mueble
 export async function insertFurniture(furniture) {
+  // Aseguramos que image siempre sea un array
+  if (furniture.image && !Array.isArray(furniture.image)) {
+    furniture.image = [furniture.image];
+  }
+
   const newFurniture = new Furniture(furniture);
   return newFurniture.save();
 }
+
 
 export async function getAllFurniture() {
   return await Furniture.find(); // Devuelve todos los documentos
@@ -21,10 +27,15 @@ export async function getFurniture(furniture) {
 
 // Actualizar mueble usando _id
 export async function updateFurniture(filter, modifiedData) {
+  // Aseguramos que image siempre sea un array
+  if (modifiedData.image && !Array.isArray(modifiedData.image)) {
+    modifiedData.image = [modifiedData.image];
+  }
+
   return Furniture.findOneAndUpdate(
-    filter,           // filter = { _id: id }
+    filter,
     { $set: modifiedData },
-    { new: true }     // devuelve el documento actualizado
+    { new: true }
   );
 }
 

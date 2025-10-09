@@ -51,7 +51,10 @@ const router = express.Router();
  *               color:
  *                 type: string
  *               image:
- *                 type: string
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["img1.jpg", "img2.jpg"]
  *               active:
  *                 type: boolean
  *     responses:
@@ -120,7 +123,10 @@ router.get('/', getFurniture);
  *                   color:
  *                     type: string
  *                   image:
- *                     type: string
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                     example: ["img1.jpg", "img2.jpg"]
  *                   active:
  *                     type: boolean
  *     responses:

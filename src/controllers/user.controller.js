@@ -9,6 +9,7 @@ export async function createUser(req, res) {
       password,
       name,
       surname,
+      personal_id,
       phone,
       shippingAddress,
       paymentMethod,

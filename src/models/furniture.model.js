@@ -11,7 +11,7 @@ const furnitureSchema = new mongoose.Schema({
     color: String,
     measurement: { type: [Number], required: true },
     description: { type: String, required: true },
-    image: String,
+    image: { type: [String], required: false }, 
     active: Boolean,
     //TODO: promotion: String 
 });
