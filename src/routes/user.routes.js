@@ -240,4 +240,46 @@ router.patch('/', authMiddleware, updateUser);
  */
 router.delete('/', authMiddleware, deleteUser);
 
+
+/**
+ * @swagger
+ * /users/password:
+ *   patch:
+ *     summary: Actualizar contraseña del usuario
+ *     description: Permite al usuario autenticado actualizar su contraseña actual
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - passwordActual
+ *               - passwordNueva
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "usuario@correo.com"
+ *               passwordActual:
+ *                 type: string
+ *                 example: "123456"
+ *               passwordNueva:
+ *                 type: string
+ *                 example: "nueva123"
+ *     responses:
+ *       200:
+ *         description: Contraseña actualizada correctamente
+ *       400:
+ *         description: Error de validación o contraseña incorrecta
+ *       401:
+ *         description: No autorizado
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.patch('/password', authMiddleware, updatePassword);
+
 export default router;

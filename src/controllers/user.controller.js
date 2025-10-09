@@ -76,3 +76,28 @@ export async function deleteUser(req, res) {
     res.status(500).json({ error: 'Error desactivando usuario' });
   }
 }
+
+import * as userService from '../services/user.service.js';
+
+// 🔹 Actualizar contraseña
+export async function updatePassword(req, res) {
+  try {
+    const { email, passwordActual, passwordNueva } = req.body;
+
+    if (!email || !passwordActual || !passwordNueva) {
+      return res.status(400).json({ message: 'Faltan datos requeridos' });
+    }
+
+    const result = await userService.updatePassword({ email, passwordActual, passwordNueva });
+
+    if (!result.success) {
+      return res.status(400).json({ message: result.message });
+    }
+
+    res.status(200).json({ message: result.message });
+  } catch (error) {
+    console.error('❌ Error al actualizar contraseña:', error);
+    res.status(500).json({ message: 'Error al actualizar contraseña' });
+  }
+}
+
