@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getUser, updateUser, deleteUser, updatePassword } from '../controllers/user.controller.js';
+import { createUser, getUser, updateUser, deleteUser, updatePasswordController } from '../controllers/user.controller.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
@@ -280,6 +280,6 @@ router.delete('/', authMiddleware, deleteUser);
  *       500:
  *         description: Error interno del servidor
  */
-router.patch('/password', authMiddleware, updatePassword);
+router.patch('/password', authMiddleware, updatePasswordController);
 
 export default router;
