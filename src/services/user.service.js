@@ -33,16 +33,15 @@ export async function updatePassword({ email, passwordActual, passwordNueva }) {
   const user = await User.findOne({ email });
   if (!user) return { success: false, message: 'Usuario no encontrado' };
 
+  // Verificar contraseña actual
   const passwordMatch = await bcrypt.compare(passwordActual, user.password);
-  if (!passwordMatch) {
-    return { success: false, message: 'La contraseña actual no es correcta' };
-  }
+  if (!passwordMatch) return { success: false, message: 'La contraseña actual no es correcta' };
 
+  // Verificar que la nueva contraseña no sea igual a la actual
   const isSame = await bcrypt.compare(passwordNueva, user.password);
-  if (isSame) {
-    return { success: false, message: 'La nueva contraseña no puede ser igual a la anterior' };
-  }
+  if (isSame) return { success: false, message: 'La nueva contraseña no puede ser igual a la anterior' };
 
+  // Guardar nueva contraseña
   const hashedPassword = await bcrypt.hash(passwordNueva, 10);
   user.password = hashedPassword;
   await user.save();
