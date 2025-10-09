@@ -78,24 +78,19 @@ export async function deleteUser(req, res) {
 }
 
 // 🔹 Actualizar contraseña
-export async function updatePassword(req, res) {
-  try {
-    const { email, passwordActual, passwordNueva } = req.body;
+export async function updatePassword({ email, passwordActual, passwordNueva }) {
+  const user = await User.findOne({ email });
+  if (!user) return { success: false, message: 'Usuario no encontrado' };
 
-    if (!email || !passwordActual || !passwordNueva) {
-      return res.status(400).json({ message: 'Faltan datos requeridos' });
-    }
+  // Verificar contraseña actual
+  const valid = bcrypt.compareSync(passwordActual, user.password);
+  if (!valid) return { success: false, message: 'Contraseña actual incorrecta' };
 
-    const result = await userService.updatePassword({ email, passwordActual, passwordNueva });
+  // Actualizar solo la contraseña sin validar otros campos
+  await User.updateOne(
+    { email },
+    { $set: { password: bcrypt.hashSync(passwordNueva, 10) } }
+  );
 
-    if (!result.success) {
-      return res.status(400).json({ message: result.message });
-    }
-
-    res.status(200).json({ message: result.message });
-  } catch (error) {
-    console.error('❌ Error al actualizar contraseña:', error);
-    res.status(500).json({ message: 'Error al actualizar contraseña' });
-  }
+  return { success: true, message: 'Contraseña actualizada correctamente' };
 }
-
