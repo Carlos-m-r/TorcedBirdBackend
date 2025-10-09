@@ -11,10 +11,11 @@ const furnitureSchema = new mongoose.Schema({
     color: String,
     measurement: { type: [Number], required: true },
     description: { type: String, required: true },
-    image: { type: [String], required: false }, 
+    image: { type: String, required: false },
     active: Boolean,
     //TODO: promotion: String 
 });
+
 
 const Furniture = mongoose.model('Furniture', furnitureSchema);
 
