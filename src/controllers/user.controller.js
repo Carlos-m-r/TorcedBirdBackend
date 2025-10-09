@@ -77,8 +77,6 @@ export async function deleteUser(req, res) {
   }
 }
 
-import * as userService from '../services/user.service.js';
-
 // 🔹 Actualizar contraseña
 export async function updatePassword(req, res) {
   try {
